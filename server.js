@@ -6,6 +6,8 @@ const fs = require("fs");
 const PUBLIC_DIR = path.resolve(__dirname, "public");
 const DB_DIR = path.resolve(__dirname, "db");
 
+//notes
+let notes = [];
 
 //set up the express app
 const app = express();
@@ -23,22 +25,36 @@ app.get('/', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'index.html')))
 
 app.get('/notes', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'notes.html')))
 
-app.get('/api/notes', (req, res)  => {
-    //Should read the `db.json` file and return all saved notes as JSON.
+//Should read the `db.json` file and return all saved notes as JSON.
+app.get('/api/notes', (req, res)  => res.sendFile(path.join(DB_DIR, 'db.json')))
+
+app.post('/api/notes', (req, res) => {
+    //POST `/api/notes` - Should receive a new note to save on the request body, add it to the `db.json` file, 
+    //POST from user using middleware to parse the information
+    const newNote = req.body
+
+    newNote.id = newNote.title.replace(/\s+/g, "").toLowerCase();
+
     try{    
-        const notes = fs.readFileSync(path.join(DB_DIR, 'db.json'), 'utf8')
+        notes = fs.readFileSync(path.join(DB_DIR, 'db.json'), 'utf8')
         console.log('Success')
     }catch(err){
         console.error(err)
     }
-    console.log(notes)
+    notes = JSON.parse(notes)
+    
+    notes.push(newNote)
 
-    return res.json(notes);
-})
 
-app.post('/api/notes', (req, res) => {
-    //POST `/api/notes` - Should receive a new note to save on the request body, add it to the `db.json` file, 
+    try{    
+        notes = fs.writeFileSync(path.join(DB_DIR, 'db.json'),  JSON.stringify(notes))
+        console.log('Success')
+    }catch(err){
+        console.error(err)
+    }
+    
     //and then return the new note to the client.
+    res.sendFile(path.join(DB_DIR, 'db.json'))
 })
 
 app.get('/api/notes/:id', (req, res) => {
