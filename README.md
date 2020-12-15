@@ -48,8 +48,8 @@ Application should allow users to delete previously saved notes.
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Test
-
-[![image](example.png)](https://whispering-brook-42517.herokuapp.com/)
+*Click Image to see live site
+[![image](images/example.png)](https://whispering-brook-42517.herokuapp.com/)
 
 ## Credits
 

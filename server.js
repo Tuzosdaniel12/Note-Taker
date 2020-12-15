@@ -53,7 +53,7 @@ app.post('/api/notes', (req, res) => {
     res.json(notes)
 })
 
-app.get('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res) => {
     //Should receive a query parameter containing the id of a note to delete.
     const id = req.params.id 
     let notes = [];
