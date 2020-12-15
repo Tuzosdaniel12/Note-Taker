@@ -2,6 +2,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const RandomID = require ("./lib/js/RandomID.js")
 
 const PUBLIC_DIR = path.resolve(__dirname, "public");
 const DB_DIR = path.resolve(__dirname, "db");
@@ -11,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // set Express static path
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static("public"));
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -30,7 +31,7 @@ app.get('/api/notes', (req, res)  => {
 
     notes = JSON.parse(notes)
 
-    return res.json(notes)
+     res.json(notes)
 })
 
 
@@ -38,10 +39,12 @@ app.get('/api/notes', (req, res)  => {
 //POST from user using middleware to parse the information
 app.post('/api/notes', (req, res) => {
     const newNote = req.body
+    const randId = new RandomID();
+     
 
     let notes = readFileDB();
 
-    newNote.id = newNote.title.replace(/\s+/g, "_").toLowerCase();
+    newNote.id = randId.createUniqueID();
 
     notes = JSON.parse(notes)
 
@@ -50,7 +53,7 @@ app.post('/api/notes', (req, res) => {
     writeFileDB(notes);
 
     //and then return the new note to the client.
-    res.json(notes)
+    return res.json(newNote)
 })
 
 app.delete('/api/notes/:id', (req, res) => {
@@ -77,12 +80,15 @@ app.delete('/api/notes/:id', (req, res) => {
  
 })
 
+app.get('*', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'index.html')))
 
 //start server
 app.listen(PORT, function() {
     console.log("App listening on http://LocalHost:" + PORT);
   });
 
+
+  //read and write functions
   readFileDB = (notes) => {
     try{    
         notes = fs.readFileSync(path.join(DB_DIR, 'db.json'), 'utf8')
