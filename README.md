@@ -49,7 +49,7 @@ Application should allow users to delete previously saved notes.
 
 ## Test
 *Click Image to see live site
-[![image](images/example.png)](https://whispering-brook-42517.herokuapp.com/)
+[![image](lib/images/example.png)](https://whispering-brook-42517.herokuapp.com/)
 
 ## Credits
 
