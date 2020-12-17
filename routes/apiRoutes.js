@@ -35,7 +35,7 @@ app.post('/api/notes', (req, res) => {
 
 app.delete('/api/notes/:id', (req, res) => {
     //Should receive a query parameter containing the id of a note to delete.
-    const id = req.params.id 
+    const checkId = req.params.id 
     let notes = [];
 
     //read file and store it in notes
@@ -44,13 +44,13 @@ app.delete('/api/notes/:id', (req, res) => {
     
     // need to filter notes so I can use it in filter
     //remove the note with the given `id` property,
-    notes = notes.filter(note => note.id != id);
+    notes = notes.filter(({id}) => id != checkId);
 
     //then rewrite the notes to the `db.json` file.
     writeFileDB(notes)
 
     //and then return the new note to the client.
-    return res.json(notes)
+    return res.json(true)
  
 })
 
