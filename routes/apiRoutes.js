@@ -43,7 +43,6 @@ app.delete('/api/notes/:id', (req, res) => {
     const id = req.params.id 
     let notes = [];
 
-    console.log(id)
     //read file and store it in notes
     //In order to delete a note, you'll need to read all notes from the `db.json` file,
     notes = readFileDB()
@@ -51,8 +50,6 @@ app.delete('/api/notes/:id', (req, res) => {
     // need to filter notes so I can use it in filter
     //remove the note with the given `id` property,
     notes = JSON.parse(notes).filter(note => note.id != id);
-
-    console.log(notes)
 
     //then rewrite the notes to the `db.json` file.
     writeFileDB(notes)
