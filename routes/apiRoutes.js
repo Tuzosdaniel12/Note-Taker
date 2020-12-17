@@ -11,8 +11,6 @@ app.get('/api/notes', (req, res)  => {
     //notes
     let notes = readFileDB();
 
-    notes = JSON.parse(notes)
-
      res.json(notes)
 })
 
@@ -27,8 +25,6 @@ app.post('/api/notes', (req, res) => {
     let notes = readFileDB();
 
     newNote.id = randId.createUniqueID();
-
-    notes = JSON.parse(notes)
 
     notes.push(newNote)
 
@@ -49,7 +45,7 @@ app.delete('/api/notes/:id', (req, res) => {
     
     // need to filter notes so I can use it in filter
     //remove the note with the given `id` property,
-    notes = JSON.parse(notes).filter(note => note.id != id);
+    notes = notes.filter(note => note.id != id);
 
     //then rewrite the notes to the `db.json` file.
     writeFileDB(notes)
@@ -66,7 +62,7 @@ app.delete('/api/notes/:id', (req, res) => {
     }catch(err){
         console.error(err)
     }
-    return notes;
+    return JSON.parse(notes);
   }
 
   writeFileDB = (notes) => {
