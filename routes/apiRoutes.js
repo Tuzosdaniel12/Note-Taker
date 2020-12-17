@@ -21,7 +21,6 @@ app.post('/api/notes', (req, res) => {
     const newNote = req.body
     const randId = new RandomID();
      
-
     let notes = readFileDB();
 
     newNote.id = randId.createUniqueID();
